@@ -5,6 +5,7 @@ import { StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native';
 import Users from './pages/Users';
 import About from './pages/About';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import Anuncios from './pages/Anuncios';
 
 const Stack = createStackNavigator();
 
@@ -16,6 +17,7 @@ export default function Navigation() {
         <Stack.Screen name="Users" component={Users} options={{ title: 'Usuários' }} />
         <Stack.Screen name="Sobre" component={About} />
         <Stack.Screen name="Política de Privacidade" component={PrivacyPolicy} />
+        <Stack.Screen name="Anúncios" component={Anuncios} />
         {/* Adicione outras telas aqui */}
       </Stack.Navigator>
     </NavigationContainer>
@@ -35,6 +37,10 @@ function HomeScreen({ navigation }) {
     navigation.navigate('Login');
   }
 
+  const handleAnuncios = () => {
+    navigation.navigate('Anúncios');
+  }
+
   const PrivacyPolicyStack = () => (
   navigation.navigate('Política de Privacidade')
 );
@@ -50,6 +56,12 @@ function HomeScreen({ navigation }) {
           <Text style={styles.buttonText}>{turma}</Text>
         </TouchableOpacity>
       ))}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleAnuncios}
+      >
+        <Text style={styles.buttonText}>Anúncios</Text>
+      </TouchableOpacity>  
       <TouchableOpacity
         style={styles.button}
         onPress={handleNavigateToAbout}

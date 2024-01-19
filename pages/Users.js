@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
 
 import api from '../api';
@@ -13,7 +13,7 @@ function Users() {
       try {
         const response = await api.get('/users');
         setUsers(response.data);
-        console.log(response.data)
+        console.log(response.data);
         setLoading(false);
       } catch (error) {
         console.error('Erro ao buscar usuários:', error);
@@ -25,7 +25,7 @@ function Users() {
   }, []);
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={styles.container}>
       {users.map(user => (
         <Card key={user._id} style={styles.card}>
           <Card.Content>
@@ -41,21 +41,34 @@ function Users() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+  },
   card: {
-    margin: 16,
-    borderRadius: 8,
+    marginVertical: 8,
+    borderRadius: 16,
     elevation: 4,
+    backgroundColor: '#fff',
     alignItems: 'center',
   },
   title: {
-    fontSize: 20, // Tamanho da fonte do título
-    fontWeight: 'bold', // Negrito
-    color: '#333', // Cor do texto
-    marginBottom: 8, // Espaçamento inferior
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 8,
   },
   email: {
-    fontSize: 16, // Tamanho da fonte do email
-    color: '#666', // Cor do texto
+    fontSize: 18,
+    color: '#666',
+  },
+  username: {
+    fontSize: 18,
+    color: '#666',
+  },
+  id: {
+    fontSize: 14,
+    color: '#888',
+    marginTop: 8,
   },
 });
 
