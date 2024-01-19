@@ -17,6 +17,8 @@ function Anuncios() {
         const response = await api.get('/anuncios');
         const anunciosArray = response.data && response.data.data ? response.data.data : [];
         setAnuncios(anunciosArray);
+        console.log(response.data);
+        console.log(anunciosArray);
         setLoading(false);
       } catch (error) {
         console.error('Erro ao buscar anúncios:', error);
@@ -49,7 +51,7 @@ function Anuncios() {
               {anuncio.image && (
                 <Image
                   source={{ uri: anuncio.image }}
-                  style={{ width: 200, height: 200, marginBottom: 8 }}
+                  style={{ width: 400, height: 200, marginBottom: 8 }}
                 />
               )}
               <Paragraph style={styles.email}>Descrição: {anuncio.description ?? 'N/A'}</Paragraph>
