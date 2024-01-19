@@ -15,7 +15,7 @@ export default function App() {
       <Navigation />
       {/* add a copirygth */}
       <Text style={ styles.copy }>
-        &copy;2024 - COLÉGIO ALTERNATIVO COLAÇO.
+        &copy;2024 - PROFSEARCH-BUSCA PROFISSIONAL.
       </Text>
     </View>
   );
