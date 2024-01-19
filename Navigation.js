@@ -6,6 +6,8 @@ import Users from './pages/Users';
 import About from './pages/About';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Anuncios from './pages/Anuncios';
+import Detalhes from './pages/DetalhesAnuncio';
+
 
 const Stack = createStackNavigator();
 
@@ -18,6 +20,7 @@ export default function Navigation() {
         <Stack.Screen name="Sobre" component={About} />
         <Stack.Screen name="Política de Privacidade" component={PrivacyPolicy} />
         <Stack.Screen name="Anúncios" component={Anuncios} />
+        <Stack.Screen name="Detalhes" component={Detalhes} />
         {/* Adicione outras telas aqui */}
       </Stack.Navigator>
     </NavigationContainer>
