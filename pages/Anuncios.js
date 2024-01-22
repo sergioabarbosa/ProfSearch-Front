@@ -52,10 +52,10 @@ function Anuncios() {
                 {anuncio.image && (
                   <Image
                     source={{ uri: anuncio.image }}
-                    style={{ width: 400, height: 200, marginBottom: 8 }}
+                    style={{ width: '100%', height: 200, marginBottom: 8, maxHeight: 200 }}
                   />
                 )}
-                <Paragraph style={styles.email}>Descrição: {anuncio.description ?? 'N/A'}</Paragraph>
+                <Paragraph style={styles.description}>Descrição: {anuncio.description ?? 'N/A'}</Paragraph>
                 <Paragraph style={styles.username}>Publicado por: {anuncio.user ?? 'N/A'}</Paragraph>
                 <Paragraph style={styles.id}>ID: {anuncio._id}</Paragraph>
                 <Paragraph style={styles.id}>Criado em: {formatDate(anuncio.createdAt)}</Paragraph>
@@ -80,23 +80,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 8,
+    marginLeft: 20,
   },
   email: {
     fontSize: 18,
     color: '#666',
   },
+  description: {
+    fontSize: 18,
+    color: '#666',
+    marginLeft: 20,
+  },
+
   username: {
     fontSize: 18,
     color: '#666',
+    marginLeft: 20,
   },
   id: {
     fontSize: 14,
     color: '#888',
     marginTop: 8,
+    marginLeft: 20,
   },
 });
 
