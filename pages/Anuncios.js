@@ -1,6 +1,5 @@
-// Anuncios.js
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, ScrollView, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
@@ -19,9 +18,9 @@ function Anuncios() {
         setAnuncios(anunciosArray);
         console.log(response.data);
         console.log(anunciosArray);
-        setLoading(false);
       } catch (error) {
         console.error('Erro ao buscar anúncios:', error);
+      } finally {
         setLoading(false);
       }
     };
@@ -40,29 +39,31 @@ function Anuncios() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {anuncios.map((anuncio) => (
-        <TouchableOpacity
-          key={anuncio._id}
-          onPress={() => navigateToDetalhes(anuncio._id)}
-        >
-          <Card style={styles.card}>
-            <Card.Content>
-              <Title style={styles.title}>{anuncio.title}</Title>
-              {anuncio.image && (
-                <Image
-                  source={{ uri: anuncio.image }}
-                  style={{ width: 400, height: 200, marginBottom: 8 }}
-                />
-              )}
-              <Paragraph style={styles.email}>Descrição: {anuncio.description ?? 'N/A'}</Paragraph>
-              <Paragraph style={styles.username}>Publicado por: {anuncio.user ?? 'N/A'}</Paragraph>
-              <Paragraph style={styles.id}>ID: {anuncio._id}</Paragraph>
-              <Paragraph style={styles.id}>Criado em: {formatDate(anuncio.createdAt)}</Paragraph>
-              <Paragraph style={styles.id}>Editado em: {formatDate(anuncio.updatedAt)}</Paragraph>
-            </Card.Content>
-          </Card>
-        </TouchableOpacity>
-      ))}
+      {loading && <ActivityIndicator size="large" color="#0000ff" />}
+      {!loading &&
+        anuncios.map((anuncio) => (
+          <TouchableOpacity
+            key={anuncio._id}
+            onPress={() => navigateToDetalhes(anuncio._id)}
+          >
+            <Card style={styles.card}>
+              <Card.Content>
+                <Title style={styles.title}>{anuncio.title}</Title>
+                {anuncio.image && (
+                  <Image
+                    source={{ uri: anuncio.image }}
+                    style={{ width: 400, height: 200, marginBottom: 8 }}
+                  />
+                )}
+                <Paragraph style={styles.email}>Descrição: {anuncio.description ?? 'N/A'}</Paragraph>
+                <Paragraph style={styles.username}>Publicado por: {anuncio.user ?? 'N/A'}</Paragraph>
+                <Paragraph style={styles.id}>ID: {anuncio._id}</Paragraph>
+                <Paragraph style={styles.id}>Criado em: {formatDate(anuncio.createdAt)}</Paragraph>
+                <Paragraph style={styles.id}>Editado em: {formatDate(anuncio.updatedAt)}</Paragraph>
+              </Card.Content>
+            </Card>
+          </TouchableOpacity>
+        ))}
     </ScrollView>
   );
 }

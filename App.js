@@ -1,20 +1,26 @@
 import React from 'react';
-import { StyleSheet, View, Button, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import Navigation from './Navigation';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      {/* Adicione o banner central e superior */}
+      <Image
+        source={require('./assets/profsearch360.png')}
+        style={styles.banner}
+      />
+
+      {/* <View style={styles.header}>
         <Image
-          // source={require('./assets/images/nova_logo.png')}
+          source={require('./assets/Logo.png')}
           style={styles.logo}
         />
-        <Text style={styles.title}>Anúncios</Text>
-      </View>
+        <Text style={styles.title}>Seja Bem-Vindo ao ProfSearch360</Text>
+      </View> */}
       <Navigation />
-      {/* add a copirygth */}
-      <Text style={ styles.copy }>
+      {/* Adicione um direito autoral */}
+      <Text style={styles.copy}>
         &copy;2024 - PROFSEARCH-BUSCA PROFISSIONAL.
       </Text>
     </View>
@@ -28,23 +34,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
   },
+  banner: {
+    width: '80%',
+    height: 220, // Ajuste o tamanho conforme necessário
+    resizeMode: 'contain',
+    marginTop: 0,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-    marginTop: 55,
     marginLeft: 20,
   },
   logo: {
-    width: 50, // Ajuste o tamanho conforme necessário
-    height: 50, // Ajuste o tamanho conforme necessário
+    width: 100, // Ajuste o tamanho conforme necessário
+    height: 100, // Ajuste o tamanho conforme necessário
     marginRight: 10,
+    borderRadius: 50,
   },
   title: {
     paddingLeft: 60,
     fontSize: 30,
     textAlign: 'center',
     fontWeight: 'bold',
+    color: '#888',
   },
   copy: {
     fontSize: 10,
@@ -53,5 +66,4 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20,
   },
-
 });

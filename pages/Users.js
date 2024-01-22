@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
 
 import api from '../api';
@@ -14,9 +14,9 @@ function Users() {
         const response = await api.get('/users');
         setUsers(response.data);
         console.log(response.data);
-        setLoading(false);
       } catch (error) {
         console.error('Erro ao buscar usuários:', error);
+      } finally {
         setLoading(false);
       }
     };
@@ -26,16 +26,18 @@ function Users() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {users.map(user => (
-        <Card key={user._id} style={styles.card}>
-          <Card.Content>
-            <Title style={styles.title}>{user.name}</Title>
-            <Paragraph style={styles.email}>Email: {user.email}</Paragraph>
-            <Paragraph style={styles.username}>Usuário: {user.username}</Paragraph>
-            <Paragraph style={styles.id}>ID: {user._id}</Paragraph>
-          </Card.Content>
-        </Card>
-      ))}
+      {loading && <ActivityIndicator size="large" color="#0000ff" />}
+      {!loading &&
+        users.map((user) => (
+          <Card key={user._id} style={styles.card}>
+            <Card.Content>
+              <Title style={styles.title}>{user.name}</Title>
+              <Paragraph style={styles.email}>Email: {user.email}</Paragraph>
+              <Paragraph style={styles.username}>Usuário: {user.username}</Paragraph>
+              <Paragraph style={styles.id}>ID: {user._id}</Paragraph>
+            </Card.Content>
+          </Card>
+        ))}
     </ScrollView>
   );
 }
