@@ -35,10 +35,12 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   banner: {
-    width: '80%',
+    width: '100%',
     height: 220, // Ajuste o tamanho conforme necessário
     resizeMode: 'contain',
     marginTop: 0,
+    marginLeft: 0,
+    marginBottom: 0,
   },
   header: {
     flexDirection: 'row',
