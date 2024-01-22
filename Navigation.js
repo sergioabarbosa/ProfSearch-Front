@@ -1,99 +1,94 @@
 import React from 'react';
-import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import { StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { StyleSheet } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import Users from './pages/Users';
 import About from './pages/About';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Anuncios from './pages/Anuncios';
 import Detalhes from './pages/DetalhesAnuncio';
 
+const Tab = createBottomTabNavigator();
+const AnunciosStack = createStackNavigator();
 
-const Stack = createStackNavigator();
+const AnunciosStackScreen = () => (
+  <AnunciosStack.Navigator>
+    <AnunciosStack.Screen name="Anuncios" component={Anuncios} />
+    <AnunciosStack.Screen name="Detalhes" component={Detalhes} />
+  </AnunciosStack.Navigator>
+);
 
 export default function Navigation() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Home' }} />
-        <Stack.Screen name="Users" component={Users} options={{ title: 'Usuários' }} />
-        <Stack.Screen name="Sobre" component={About} />
-        <Stack.Screen name="Política de Privacidade" component={PrivacyPolicy} />
-        <Stack.Screen name="Anúncios" component={Anuncios} />
-        <Stack.Screen name="Detalhes" component={Detalhes} />
-        {/* Adicione outras telas aqui */}
-      </Stack.Navigator>
+      <Tab.Navigator
+        initialRouteName="Home"
+        screenOptionsOptions={{
+          activeTintColor: '#EB3337',
+          inactiveTintColor: '#888',
+          labelStyle: {
+            fontSize: 14,
+          },
+          style: {
+            backgroundColor: '#f0f0f0',
+            height: 60, // Altura da barra de navegação inferior
+          },
+        }}
+      >
+        <Tab.Screen
+          name="Users"
+          component={Users}
+          options={{
+            tabBarLabel: 'Usuários',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="person-circle-outline" size={size} color={color} />
+            ),
+          }} // <ion-icon name="hand-right-outline"></ion-icon>
+        />
+        <Tab.Screen
+          name="Anuncios"
+          component={AnunciosStackScreen}
+          options={{
+            tabBarLabel: 'Anúncios',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="pricetag-outline" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Sobre"
+          component={About}
+          options={{
+            tabBarLabel: 'Sobre',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="information-circle-outline" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Política de Privacidade"
+          component={PrivacyPolicy}
+          options={{
+            tabBarLabel: 'Privacidade',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="hand-right-outline" size={size} color={color} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
     </NavigationContainer>
-  );
-}
-
-function HomeScreen({ navigation }) {
-  const handleNavigate = (turma) => {
-    navigation.navigate(turma);
-  };
-
-  const handleNavigateToAbout = () => {
-    navigation.navigate('Sobre');
-  };
-
-  const handleLogin = () => {
-    navigation.navigate('Login');
-  }
-
-  const handleAnuncios = () => {
-    navigation.navigate('Anúncios');
-  }
-
-  const PrivacyPolicyStack = () => (
-  navigation.navigate('Política de Privacidade')
-);
-
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {['Users'].map((turma, index) => (
-        <TouchableOpacity
-          key={index}
-          style={styles.button}
-          onPress={() => handleNavigate(turma)}
-        >
-          <Text style={styles.buttonText}>{turma}</Text>
-        </TouchableOpacity>
-      ))}
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleAnuncios}
-      >
-        <Text style={styles.buttonText}>Anúncios</Text>
-      </TouchableOpacity>  
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleNavigateToAbout}
-      >
-        <Text style={styles.buttonText}>Sobre</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-          style={styles.button}
-          onPress={PrivacyPolicyStack} // Estava faltando as chaves aqui
-        >
-          <Text style={styles.buttonText}>Política de Privacidade</Text>
-        </TouchableOpacity>
-    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',// cor de fundo
-  },
-  button: {
-    backgroundColor: '#EB3337',
-    padding: 10,
-    borderRadius: 5,
-    marginVertical: 10,
-    width: 200,
+    backgroundColor: '#f0f0f0', // cor de fundo
   },
   buttonText: {
     color: '#fff',

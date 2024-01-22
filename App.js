@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   banner: {
     width: '100%',
-    height: 220, // Ajuste o tamanho conforme necessário
+    height: 150, // Ajuste o tamanho conforme necessário
     resizeMode: 'contain',
     marginTop: 0,
     marginLeft: 0,
