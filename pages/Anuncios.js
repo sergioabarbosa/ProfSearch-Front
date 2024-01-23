@@ -65,10 +65,11 @@ function Anuncios() {
                     <Image
                       source={{ uri: anuncio.image }}
                       style={{ 
-                        width: '100%',
-                        height: 200, 
+                        width: '100%',  // Mantenha a largura em 100% para ocupar a largura total
+                        height: 200,    // Altura fixa desejada
                         marginBottom: 8, 
-                        maxHeight: 200 
+                        aspectRatio: 16 / 9,  // Ajuste a proporção conforme necessário
+                        resizeMode: 'cover',  // Garante que a imagem cubra a área especificada
                       }}
                     />
                   )}

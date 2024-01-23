@@ -12,6 +12,7 @@ import Detalhes from './pages/DetalhesAnuncio';
 import Account from './pages/AccountPage';
 import Home from './pages/Home';
 import Buscar from './pages/SearchPage';
+import CreateAds from './pages/CreateAds';
 
 const Tab = createBottomTabNavigator();
 const AnunciosStack = createStackNavigator();
@@ -74,7 +75,7 @@ export default function Navigation() {
         />
         <Tab.Screen
           name="Anunciar"
-          component={AnunciosStackScreen}
+          component={CreateAds}
           options={{
             tabBarLabel: 'Anunciar',
             tabBarIcon: ({ color, size }) => (
