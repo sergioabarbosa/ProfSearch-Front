@@ -7,9 +7,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Users from './pages/Users';
 import About from './pages/About';
-import PrivacyPolicy from './pages/PrivacyPolicy';
 import Anuncios from './pages/Anuncios';
 import Detalhes from './pages/DetalhesAnuncio';
+import Account from './pages/AccountPage';
+import Home from './pages/Home';
+import Buscar from './pages/SearchPage';
 
 const Tab = createBottomTabNavigator();
 const AnunciosStack = createStackNavigator();
@@ -26,7 +28,7 @@ export default function Navigation() {
     <NavigationContainer>
       <Tab.Navigator
         initialRouteName="Home"
-        screenOptionsOptions={{
+        screenOptions={{
           activeTintColor: '#EB3337',
           inactiveTintColor: '#888',
           labelStyle: {
@@ -39,44 +41,56 @@ export default function Navigation() {
         }}
       >
         <Tab.Screen
-          name="Users"
-          component={Users}
+          name="Home"
+          component={Home}
           options={{
-            tabBarLabel: 'Usuários',
+            tabBarLabel: 'Home',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="person-circle-outline" size={size} color={color} />
+              <Ionicons name="home-outline" size={size} color={color} />
             ),
-          }} // <ion-icon name="hand-right-outline"></ion-icon>
+          }}
+          
         />
         <Tab.Screen
-          name="Anuncios"
+          name="Anúcios"
           component={AnunciosStackScreen}
           options={{
             tabBarLabel: 'Anúncios',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="pricetag-outline" size={size} color={color} />
+              <Ionicons name="storefront-outline" size={size} color={color} />
+            ),
+          }}// <ion-icon name="storefront-outline"></ion-icon>
+          
+        />
+        <Tab.Screen
+          name="Buscar"
+          component={Buscar}
+          options={{
+            tabBarLabel: 'Buscar',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="search-outline" size={size} color={color} />
             ),
           }}
         />
         <Tab.Screen
-          name="Sobre"
-          component={About}
+          name="Anunciar"
+          component={AnunciosStackScreen}
           options={{
-            tabBarLabel: 'Sobre',
+            tabBarLabel: 'Anunciar',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="information-circle-outline" size={size} color={color} />
+              <Ionicons name="add-circle-outline" size={size} color={color} />
             ),
-          }}
+          }}// <ion-icon name="add-circle-outline"></ion-icon>
         />
         <Tab.Screen
-          name="Política de Privacidade"
-          component={PrivacyPolicy}
+          name="Conta"
+          component={Account}
           options={{
-            tabBarLabel: 'Privacidade',
+            tabBarLabel: 'Conta',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="hand-right-outline" size={size} color={color} />
+              <Ionicons name="menu-outline" size={size} color={color} />
             ),
-          }}
+          }}// <ion-icon name="menu-outline"></ion-icon>
         />
       </Tab.Navigator>
     </NavigationContainer>
