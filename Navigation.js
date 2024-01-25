@@ -58,9 +58,9 @@ export default function Navigation() {
           options={{
             tabBarLabel: 'Anúncios',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="storefront-outline" size={size} color={color} />
+              <Ionicons name="briefcase-outline" size={size} color={color} />
             ),
-          }}// <ion-icon name="storefront-outline"></ion-icon>
+          }}// <ion-icon name="briefcase-outline"></ion-icon>
           
         />
         <Tab.Screen
