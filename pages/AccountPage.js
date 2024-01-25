@@ -26,7 +26,7 @@ export default function AccountPage() {
       quality: 1,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setImage(result.uri);
     }
   };
