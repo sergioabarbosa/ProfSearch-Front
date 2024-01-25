@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { Button, Avatar } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
+import { Platform } from 'react-native';
+import axios from 'axios';
+
+import api from '../api';
 
 export default function AccountPage() {
   const [image, setImage] = useState(null);
@@ -32,6 +36,38 @@ export default function AccountPage() {
     }
   };
 
+  const handleUploadImage = async () => {
+    if (!image) {
+      console.log('Nenhuma imagem selecionada.');
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('image', {
+        uri: image,
+        type: 'image/jpeg',
+        name: 'image',
+      });
+
+      const response = await api.post(`/upload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Accept': 'application/json',
+        },
+      });
+
+     if (response.status === 200 || response.status === 201) {
+        console.log('Imagem enviada com sucesso para o servidor!');
+      } else {
+        console.error('Erro ao enviar a imagem para o servidor:', response.status);
+      }
+
+    } catch (error) {
+      console.error('Erro ao enviar a imagem para o servidor:', error.message);
+    }
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.profileContainer}>
@@ -44,11 +80,8 @@ export default function AccountPage() {
       </TouchableOpacity>
       {image && <Image source={{ uri: image }} style={styles.selectedImage} />}
       <View style={styles.buttonContainer}>
-        <Button icon="account-edit" mode="contained" onPress={() => console.log('Editar Perfil')}>
-          Editar Perfil
-        </Button>
-        <Button icon="logout" mode="outlined" onPress={() => console.log('Logout')}>
-          Sair
+        <Button icon="upload" mode="contained" onPress={handleUploadImage}>
+          Enviar Imagem
         </Button>
       </View>
     </ScrollView>
@@ -94,7 +127,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     width: '100%',
   },
 });
