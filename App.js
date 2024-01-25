@@ -1,9 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import Navigation from './Navigation';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 
 export default function App() {
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <View style={styles.container}>
       {/* Adicione o banner central e superior */}
       <Image
@@ -24,6 +27,7 @@ export default function App() {
         &copy;2024 - PROFSEARCH-BUSCA PROFISSIONAL.
       </Text>
     </View>
+    </GestureHandlerRootView>
   );
 }
 
