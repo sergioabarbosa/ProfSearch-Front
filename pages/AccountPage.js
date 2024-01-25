@@ -27,7 +27,8 @@ export default function AccountPage() {
     });
 
     if (!result.canceled) {
-      setImage(result.uri);
+      // Acesse o array "assets" em vez de "uri"
+      setImage(result.assets && result.assets.length > 0 ? result.assets[0].uri : null);
     }
   };
 

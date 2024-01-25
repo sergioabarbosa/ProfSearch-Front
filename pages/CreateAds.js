@@ -86,7 +86,7 @@ const CreateAds = () => {
         ))}
       </Picker>
 
-      <Button title="Criar Anúncio" onPress={handleCreateAd} />
+      <Button title="Criar Anúncio" onPress={handleCreateAd} style={styles.button} />
     </ScrollView>
   );
 };
@@ -94,6 +94,7 @@ const CreateAds = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+    paddingBottom: 32,
   },
   label: {
     fontSize: 16,
@@ -106,6 +107,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 16,
     paddingHorizontal: 8,
+  },
+  button: {
+    marginTop: 16,
   },
 });
 
