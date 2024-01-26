@@ -23,7 +23,7 @@ export const createUser = async (
   confirmpassword,
   address
 ) => {
-  const request = await api.post("/auth/register", {
+  const request = await api.post("/users", {
     name,
     username,
     userPlan,
