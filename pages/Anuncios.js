@@ -3,7 +3,7 @@ import { View, ScrollView, StyleSheet, Image, TouchableOpacity, ActivityIndicato
 import { Card, Title, Paragraph } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
-import api from '../api';
+import { api } from '../api';
 
 function Anuncios() {
   const [users, setUsers] = useState({});

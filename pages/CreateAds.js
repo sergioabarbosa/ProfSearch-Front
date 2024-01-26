@@ -3,7 +3,7 @@ import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios'; // Importe a biblioteca Axios
 
-import api from '../api';
+import { api } from '../api';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const CreateAds = () => {

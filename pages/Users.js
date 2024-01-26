@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
 
-import api from '../api';
+import { api } from '../api';
 
 function Users() {
   const [users, setUsers] = useState([]);

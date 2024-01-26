@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native';
-import api from '../api';
+import { api } from '../api';
 
 function DetalhesAnuncio({ route }) {
   const { anuncioId } = route.params;

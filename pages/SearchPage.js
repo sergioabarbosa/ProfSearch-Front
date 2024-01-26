@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, FlatList, Image } from 'react-native';
-import api from '../api';
+import { api } from '../api';
 
 const SearchPage = () => {
   const [searchQuery, setSearchQuery] = useState('');

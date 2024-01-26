@@ -13,15 +13,25 @@ import Account from './pages/AccountPage';
 import Home from './pages/Home';
 import Buscar from './pages/SearchPage';
 import CreateAds from './pages/CreateAds';
+import LoginPage from './pages/LoginPage';
 
 const Tab = createBottomTabNavigator();
 const AnunciosStack = createStackNavigator();
+const LoginStack = createStackNavigator(); // Novo StackNavigator para Login
 
 const AnunciosStackScreen = () => (
   <AnunciosStack.Navigator>
     <AnunciosStack.Screen name="Anuncios" component={Anuncios} />
     <AnunciosStack.Screen name="Detalhes" component={Detalhes} />
   </AnunciosStack.Navigator>
+);
+
+const LoginStackScreen = () => (
+  <LoginStack.Navigator>
+    <LoginStack.Screen name="LoginPage" component={LoginPage} />
+    <LoginStack.Screen name="Home" component={Home} />
+    {/* Você pode adicionar outras telas de login aqui, se necessário */}
+  </LoginStack.Navigator>
 );
 
 export default function Navigation() {
@@ -50,7 +60,6 @@ export default function Navigation() {
               <Ionicons name="home-outline" size={size} color={color} />
             ),
           }}
-          
         />
         <Tab.Screen
           name="Anúcios"
@@ -60,8 +69,7 @@ export default function Navigation() {
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="briefcase-outline" size={size} color={color} />
             ),
-          }}// <ion-icon name="briefcase-outline"></ion-icon>
-          
+          }}
         />
         <Tab.Screen
           name="Buscar"
@@ -81,7 +89,7 @@ export default function Navigation() {
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="add-circle-outline" size={size} color={color} />
             ),
-          }}// <ion-icon name="add-circle-outline"></ion-icon>
+          }}
         />
         <Tab.Screen
           name="Conta"
@@ -91,7 +99,17 @@ export default function Navigation() {
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="menu-outline" size={size} color={color} />
             ),
-          }}// <ion-icon name="menu-outline"></ion-icon>
+          }}
+        />
+        <Tab.Screen
+          name="Login"
+          component={LoginStackScreen}
+          options={{
+            tabBarLabel: 'Login',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="log-in-outline" size={size} color={color} />
+            ),
+          }}
         />
       </Tab.Navigator>
     </NavigationContainer>

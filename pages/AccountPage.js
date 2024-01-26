@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { Button, Avatar } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { Platform } from 'react-native';
 import axios from 'axios';
+import { api } from '../api';
 
-import api from '../api';
+import { AuthContext } from '../Contexts/auth'; // Importação do contexto de autenticação
 
 export default function AccountPage() {
   const [image, setImage] = useState(null);
+  const { handleLogout } = useContext(AuthContext); // Acesso à função de logout do contexto de autenticação
 
   useEffect(() => {
     // Solicitar permissão ao carregar o componente
@@ -57,7 +59,7 @@ export default function AccountPage() {
         },
       });
 
-     if (response.status === 200 || response.status === 201) {
+      if (response.status === 200 || response.status === 201) {
         console.log('Imagem enviada com sucesso para o servidor!');
       } else {
         console.error('Erro ao enviar a imagem para o servidor:', response.status);
@@ -84,6 +86,9 @@ export default function AccountPage() {
           Enviar Imagem
         </Button>
       </View>
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <Text style={styles.buttonText}>Logout</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -129,5 +134,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     width: '100%',
+  },
+  logoutButton: {
+    backgroundColor: '#c0392b',
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 20,
   },
 });
