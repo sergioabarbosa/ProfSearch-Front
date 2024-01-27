@@ -10,7 +10,7 @@ import { AuthContext } from '../Contexts/auth'; // Importação do contexto de a
 
 export default function AccountPage({navigation}) {
   const [image, setImage] = useState(null);
-  const { logout } = useContext(AuthContext); // Acesso à função de logout do contexto de autenticação
+  const { logout, authenticated } = useContext(AuthContext); // Acesso à função de logout do contexto de autenticação
 
   useEffect(() => {
     // Solicitar permissão ao carregar o componente
@@ -92,7 +92,7 @@ export default function AccountPage({navigation}) {
         </Button>
       </View>
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-        <Text style={styles.buttonText}>Logout</Text>
+        {authenticated ?<Text style={styles.buttonText}>Logout</Text> : <Text style={styles.buttonText}>Login</Text> }
       </TouchableOpacity>
     </ScrollView>
   );
