@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: 'http://localhost:3000'
+  baseURL: 'http://192.168.0.17:3000'
 });
 
 export const createSession = async (username, password) => {
@@ -57,16 +57,16 @@ export const getUsers = async (token) => {
 };
 getUsers().then((users) => console.log(users));
 
-// export const getUser = async (token, id) => {
-//   const request = await api.get(`/users/${id}`, {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-//   console.log(request.data);
-//   return request.data;
-// };
-// getUser().then((user) => console.log(user)); 
+export const getUser = async (token, id) => {
+  const request = await api.get(`/users/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  console.log(request.data);
+  return request.data;
+};
+getUser().then((user) => console.log(user)); 
 
 export const updateUser = async (token, id, name, email, password) => {
   const request = await api.put(`/users/${id}`, { name, email, password }, {

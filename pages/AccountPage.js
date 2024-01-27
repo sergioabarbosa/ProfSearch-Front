@@ -4,13 +4,13 @@ import { Button, Avatar } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { Platform } from 'react-native';
 import axios from 'axios';
-import { api } from '../api';
+import { api} from '../api';
 
 import { AuthContext } from '../Contexts/auth'; // Importação do contexto de autenticação
 
-export default function AccountPage() {
+export default function AccountPage({navigation}) {
   const [image, setImage] = useState(null);
-  const { handleLogout } = useContext(AuthContext); // Acesso à função de logout do contexto de autenticação
+  const { logout } = useContext(AuthContext); // Acesso à função de logout do contexto de autenticação
 
   useEffect(() => {
     // Solicitar permissão ao carregar o componente
@@ -68,6 +68,11 @@ export default function AccountPage() {
     } catch (error) {
       console.error('Erro ao enviar a imagem para o servidor:', error.message);
     }
+  };
+
+  const handleLogout = () => {
+      logout();
+      navigation.navigate('Login');
   };
 
   return (
