@@ -1,7 +1,8 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: 'http://192.168.0.17:3000'
+  baseURL: 'http://localhost:3000'
 });
 
 export const createSession = async (username, password) => {
@@ -45,36 +46,48 @@ export const createUser = async (
   return request;
 };
 
-export const getUsers = async (token) => {
-  const request = await api.get("/users", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  console.log(request.data);
-  localStorage.setItem("users", JSON.stringify(request.data));
-  return request.data;
+export const getUsers = async (access_token) => {
+  try {
+    const request = await api.get("/users", {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+    console.log(request.data);
+    await AsyncStorage.setItem("users", JSON.stringify(request.data));
+    return request.data;
+  } catch (error) {
+    console.error('Erro ao obter usuários:', error);
+    return null;
+  }
 };
-getUsers().then((users) => console.log(users));
 
-export const getUser = async (token, id) => {
-  const request = await api.get(`/users/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  console.log(request.data);
-  return request.data;
+export const getUser = async (access_token, id) => {
+  try {
+    const request = await api.get(`/users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+    console.log(request.data);
+    return request.data;
+  } catch (error) {
+    console.error('Erro ao obter usuário:', error);
+    return null;
+  }
 };
-getUser().then((user) => console.log(user)); 
 
-export const updateUser = async (token, id, name, email, password) => {
-  const request = await api.put(`/users/${id}`, { name, email, password }, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  console.log(request.data);
-  return request.data;
-}
-// updateUser().then((user) => console.log(user));
+export const updateUser = async (access_token, id, name, email, password) => {
+  try {
+    const request = await api.put(`/users/${id}`, { name, email, password }, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+    console.log(request.data);
+    return request.data;
+  } catch (error) {
+    console.error('Erro ao atualizar usuário:', error);
+    return null;
+  }
+};

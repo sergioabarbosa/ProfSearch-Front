@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
+import { api, createSession } from "../api";
+import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { api, createSession, getUsers } from "../api";
 
 export const AuthContext = createContext();
 
@@ -8,28 +9,16 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
     const getUserFromStorage = async () => {
       try {
-        // Verifica se estamos em um ambiente React Native
-        if (typeof localStorage === 'undefined') {
-          const recoveredUser = await AsyncStorage.getItem("user");
-          if (recoveredUser) {
-            setUser(JSON.parse(recoveredUser));
-            console.log('Usuário recuperado com sucesso do AsyncStorage');
-          } else {
-            console.log('Nenhum usuário recuperado do AsyncStorage');
-          }
+        const recoveredUser = await AsyncStorage.getItem("user");
+        if (recoveredUser) {
+          setUser(JSON.parse(recoveredUser));
+          console.log(recoveredUser);
+          console.log('Usuário recuperado com sucesso do AsyncStorage');
         } else {
-          // Usuário está em um navegador, usando localStorage
-          const recoveredUser = localStorage.getItem("user");
-          if (recoveredUser) {
-            setUser(JSON.parse(recoveredUser));
-            console.log('Usuário recuperado com sucesso do localStorage');
-          } else {
-            console.log('Nenhum usuário recuperado do localStorage');
-          }
+          console.log('Nenhum usuário recuperado do AsyncStorage');
         }
       } catch (error) {
         console.error('Erro ao recuperar usuário:', error);
@@ -43,66 +32,45 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
   try {
+    // Chamar a API para autenticar o usuário
     const response = await createSession(username, password);
-    const newUser = await getUsers(response.data.users);
-    const loggedUser = newUser.find((user) => user.username === username);
+    console.log("response", response);
 
-    if (loggedUser) {
-      const token = response.data.access_token;
-      
-      // Use AsyncStorage para armazenar o usuário em dispositivos móveis
-      await AsyncStorage.setItem('user', JSON.stringify(loggedUser));
-      await AsyncStorage.setItem('token', token);
-      
-      console.log('Usuário salvo com sucesso no AsyncStorage');
+    // Verificar se a resposta foi bem-sucedida (status 200)
+    if (response.status === 200 && response.data) {
+      // Extrair os dados do usuário e o token de acesso da resposta
+      const { access_token } = response.data;
+      const user = response.data["Usuário logado com sucesso!"];
 
-      // Atualize o estado do usuário com a função setUser
-      setUser(loggedUser);
+      // Definir o usuário no estado local ou no contexto de autenticação
+      setUser(user);
 
-      // Atualize o cabeçalho de autorização da API com o token
-      api.defaults.headers.Authorization = `Bearer ${token}`;
+      // Definir o token de acesso nos cabeçalhos da API
+      api.defaults.headers.Authorization = `Bearer ${access_token}`;
+
+      // Armazenar o usuário e o token de acesso no AsyncStorage
+      await AsyncStorage.setItem('user', JSON.stringify(user));
+      await AsyncStorage.setItem('token', access_token);
+      console.log('Usuário logado com sucesso:', user);
+      console.log('Token de acesso armazenado com sucesso:', access_token);
     } else {
-      console.log('Usuário não encontrado');
+      console.error('Falha ao fazer login: Resposta inválida da API');
     }
   } catch (error) {
     console.error('Erro ao fazer login:', error);
-    console.log('chamou')
   }
 };
 
-  const SignUp = async (name, email, usertype, photo, password, confirmPassword) => {
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, usertype, photo, password, confirmPassword })
-    };
 
-    try {
-      const response = await fetch('http://localhost:3000/register', requestOptions);
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error('Erro ao fazer cadastro:', error);
-    }
-  };
 
-  const logout = () => {
+  const logout = async () => {
     console.log('logout');
-    if (typeof localStorage === 'undefined') {
-      AsyncStorage.removeItem('user');
-    } else {
-      localStorage.removeItem('user');
-    }
-    localStorage.removeItem('token');
-    api.defaults.headers.Authorization = null;
-
+    await AsyncStorage.removeItem('user');
     setUser(null);
-    // Navegue para a página de login após o logout
-    // Por favor, substitua 'login' pelo nome da rota da página de login
   };
 
   return (
-    <AuthContext.Provider value={{ authenticated: !!user, user, login, logout, loading, SignUp }}>
+    <AuthContext.Provider value={{ authenticated: !!user, user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
