@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: 'http://localhost:3000'
+  baseURL: 'http://192.168.0.17:3000'
 });
 
 export const createSession = async (username, password) => {

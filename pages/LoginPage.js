@@ -4,12 +4,12 @@ import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 const LoginPage = () => {
-  const { authenticated, login } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
-  const navigate = useNavigation();
+  const navigation = useNavigation();
 
   // Definindo a referência para o campo de senha
   let passwordInputRef = useRef(null);
@@ -21,17 +21,17 @@ const LoginPage = () => {
     setShowMessage(true);
     setTimeout(() => {
       setShowMessage(false);
+      navigation.navigate('Home'); // Redirecionamento para a Home após o login
     }, 3000); // 3000 milliseconds = 3 seconds
   };
 
   const handleRegister = () => {
-    navigate.navigate('/register');
+    navigation.navigate('Register');
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login do Sistema</Text>
-      <Text>{String(authenticated)}</Text>
       <View style={styles.form}>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Username</Text>
