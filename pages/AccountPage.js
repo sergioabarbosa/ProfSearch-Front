@@ -5,14 +5,18 @@ import * as ImagePicker from 'expo-image-picker';
 import { Platform } from 'react-native';
 import axios from 'axios';
 import { api} from '../api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { AuthContext } from '../Contexts/auth'; // Importação do contexto de autenticação
 
 export default function AccountPage({navigation}) {
   const [image, setImage] = useState(null);
-  const { logout, authenticated } = useContext(AuthContext); // Acesso à função de logout do contexto de autenticação
+  const { logout, authenticated, user } = useContext(AuthContext); // Acesso à função de logout do contexto de autenticação
 
   useEffect(() => {
+    // recuperando o usuário do AsyncStorage
+    AsyncStorage.getItem('user');
+    console.log('Usuário no contexto de autenticação:', user);
     // Solicitar permissão ao carregar o componente
     (async () => {
       if (Platform.OS !== 'web') {
@@ -79,7 +83,7 @@ export default function AccountPage({navigation}) {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.profileContainer}>
         <Avatar.Image size={100} source={image ? { uri: image } : require('../assets/icon.png')} />
-        <Text style={styles.userName}>Nome do Usuário</Text>
+        <Text style={styles.userName}>Nome do Usuário: {user ? user.username : 'Não autenticado'}</Text>
         <Text style={styles.email}>Endereço de E-mail</Text>
       </View>
       <TouchableOpacity style={styles.imagePickerButton} onPress={pickImage}>

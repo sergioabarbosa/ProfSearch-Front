@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -14,9 +14,11 @@ import Home from './pages/Home';
 import Buscar from './pages/SearchPage';
 import CreateAds from './pages/CreateAds';
 import LoginPage from './pages/LoginPage';
+import { AuthContext } from './Contexts/auth'; // Importação do contexto de autenticação
 
 const Tab = createBottomTabNavigator();
 const AnunciosStack = createStackNavigator();
+const Stack = createStackNavigator(); // Modificado para Stack
 const LoginStack = createStackNavigator(); // Novo StackNavigator para Login
 
 const AnunciosStackScreen = () => (
@@ -29,16 +31,17 @@ const AnunciosStackScreen = () => (
 const LoginStackScreen = () => (
   <LoginStack.Navigator>
     <LoginStack.Screen name="LoginPage" component={LoginPage} />
-    <LoginStack.Screen name="Home" component={Home} />
     {/* Você pode adicionar outras telas de login aqui, se necessário */}
   </LoginStack.Navigator>
 );
 
 export default function Navigation() {
+  const { authenticated } = useContext(AuthContext); // Certifique-se de importar o AuthContext
+
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName={authenticated ? "Home" : "Login"} // Define a tela inicial com base na autenticação
         screenOptions={{
           activeTintColor: '#EB3337',
           inactiveTintColor: '#888',
@@ -51,6 +54,18 @@ export default function Navigation() {
           },
         }}
       >
+        {!authenticated && ( // Se não estiver autenticado, exibe a tela de login
+          <Tab.Screen
+            name="Login"
+            component={LoginStackScreen}
+            options={{
+              tabBarLabel: 'Login',
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="log-in-outline" size={size} color={color} />
+              ),
+            }}
+          />
+        )}
         <Tab.Screen
           name="Home"
           component={Home}
@@ -98,16 +113,6 @@ export default function Navigation() {
             tabBarLabel: 'Conta',
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="menu-outline" size={size} color={color} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Login"
-          component={LoginStackScreen}
-          options={{
-            tabBarLabel: 'Login',
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="log-in-outline" size={size} color={color} />
             ),
           }}
         />
