@@ -43,36 +43,39 @@ export default function AccountPage({navigation}) {
   };
 
   const handleUploadImage = async () => {
-    if (!image) {
-      console.log('Nenhuma imagem selecionada.');
-      return;
+  if (!image) {
+    console.log('Nenhuma imagem selecionada.');
+    return;
+  }
+
+  try {
+    const userId = user ? user._id : null; // Obtém o ID do usuário do estado local ou do contexto de autenticação
+    console.log('ID do usuário:', userId);
+    const formData = new FormData();
+    formData.append('image', {
+      uri: image,
+      type: 'image/jpeg',
+      name: 'image',
+    });
+    formData.append('userId', userId); // Adiciona o ID do usuário ao FormData
+
+    const response = await api.post(`/upload`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Accept': 'application/json',
+      },
+    });
+
+    if (response.status === 200 || response.status === 201) {
+      console.log('Imagem enviada com sucesso para o servidor!');
+    } else {
+      console.error('Erro ao enviar a imagem para o servidor:', response.status);
     }
 
-    try {
-      const formData = new FormData();
-      formData.append('image', {
-        uri: image,
-        type: 'image/jpeg',
-        name: 'image',
-      });
-
-      const response = await api.post(`/upload`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Accept': 'application/json',
-        },
-      });
-
-      if (response.status === 200 || response.status === 201) {
-        console.log('Imagem enviada com sucesso para o servidor!');
-      } else {
-        console.error('Erro ao enviar a imagem para o servidor:', response.status);
-      }
-
-    } catch (error) {
-      console.error('Erro ao enviar a imagem para o servidor:', error.message);
-    }
-  };
+  } catch (error) {
+    console.error('Erro ao enviar a imagem para o servidor:', error.message);
+  }
+};
 
   const handleLogout = () => {
       logout();

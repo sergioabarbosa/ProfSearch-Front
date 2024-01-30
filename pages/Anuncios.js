@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Card, Title, Paragraph } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-
 import { api } from '../api';
 
 function Anuncios() {
@@ -12,31 +11,31 @@ function Anuncios() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const usersResponse = await api.get('/users');
-        const anunciosResponse = await api.get('/anuncios');
-
-        const usersData = usersResponse.data;
-        const anunciosData = anunciosResponse.data && anunciosResponse.data.data
-          ? anunciosResponse.data.data
-          : [];
-
-        setUsers(usersData.reduce((acc, user) => {
-          acc[user._id] = user;
-          return acc;
-        }, {}));
-
-        setAnuncios(anunciosData);
-      } catch (error) {
-        console.error('Erro ao buscar dados:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      const usersResponse = await api.get('/users');
+      const anunciosResponse = await api.get('/anuncios');
+
+      const usersData = usersResponse.data;
+      const anunciosData = anunciosResponse.data && anunciosResponse.data.data
+        ? anunciosResponse.data.data
+        : [];
+
+      setUsers(usersData.reduce((acc, user) => {
+        acc[user._id] = user;
+        return acc;
+      }, {}));
+
+      setAnuncios(anunciosData);
+    } catch (error) {
+      console.error('Erro ao buscar dados:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -47,42 +46,43 @@ function Anuncios() {
     navigation.navigate('Detalhes', { anuncioId });
   };
 
+  useEffect(() => {
+    console.log('Usuários:', users);
+    console.log('Anúncios:', anuncios);
+  }, [users, anuncios]);
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {loading && <ActivityIndicator size="large" color="#0000ff" />}
-      {!loading &&
-        anuncios.map((anuncio) => {
-          const user = users[anuncio.user] || {};
-          return (
-            <TouchableOpacity
-              key={anuncio._id}
-              onPress={() => navigateToDetalhes(anuncio._id)}
-            >
-              <Card style={styles.card}>
-                <Card.Content>
-                  <Title style={styles.title}>{anuncio.title}</Title>
-                  {anuncio.image && (
-                    <Image
-                      source={{ uri: anuncio.image }}
-                      style={{ 
-                        width: '100%',  // Mantenha a largura em 100% para ocupar a largura total
-                        height: 200,    // Altura fixa desejada
-                        marginBottom: 8, 
-                        aspectRatio: 16 / 9,  // Ajuste a proporção conforme necessário
-                        resizeMode: 'cover',  // Garante que a imagem cubra a área especificada
-                      }}
-                    />
-                  )}
-                  <Paragraph style={styles.description}>Descrição: {anuncio.description ?? 'N/A'}</Paragraph>
-                  <Paragraph style={styles.id}>Criado em: {formatDate(anuncio.createdAt)}</Paragraph>
-                  <Paragraph style={styles.id}>Editado em: {formatDate(anuncio.updatedAt)}</Paragraph>
-                  <Paragraph style={styles.id}>ID: {anuncio._id}</Paragraph>
-                  <Paragraph style={styles.username}>Publicado por: {user.username ?? 'N/A'}</Paragraph>
-                </Card.Content>
-              </Card>
-            </TouchableOpacity>
-          );
-        })}
+      {!loading && anuncios.map((anuncio) => (
+        <TouchableOpacity
+          key={anuncio._id}
+          onPress={() => navigateToDetalhes(anuncio._id)}
+        >
+          <Card style={styles.card}>
+            <Card.Content>
+              <Title style={styles.title}>{anuncio.title}</Title>
+              {anuncio.image && (
+                <Image
+                  source={{ uri: anuncio.image }}
+                  style={{ 
+                    width: '100%',
+                    height: 200,
+                    marginBottom: 8, 
+                    aspectRatio: 16 / 9,
+                    resizeMode: 'cover',
+                  }}
+                />
+              )}
+              <Paragraph style={styles.description}>Descrição: {anuncio.description ?? 'N/A'}</Paragraph>
+              <Paragraph style={styles.id}>Criado em: {formatDate(anuncio.createdAt)}</Paragraph>
+              <Paragraph style={styles.id}>Editado em: {formatDate(anuncio.updatedAt)}</Paragraph>
+              <Paragraph style={styles.id}>ID: {anuncio._id}</Paragraph>
+              <Paragraph style={styles.username}>Publicado por: {anuncio.user ? users[anuncio.user]?.name ?? 'N/A' : 'N/A'}</Paragraph>
+            </Card.Content>
+          </Card>
+        </TouchableOpacity>
+      ))}
     </ScrollView>
   );
 }
@@ -104,10 +104,6 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 8,
     marginLeft: 20,
-  },
-  email: {
-    fontSize: 18,
-    color: '#666',
   },
   description: {
     fontSize: 18,

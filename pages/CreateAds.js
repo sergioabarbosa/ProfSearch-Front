@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios'; // Importe a biblioteca Axios
 
 import { api } from '../api';
 import { ScrollView } from 'react-native-gesture-handler';
+import { AuthContext } from '../Contexts/auth';
 
 const CreateAds = () => {
   const [title, setTitle] = useState('');
@@ -13,6 +14,15 @@ const CreateAds = () => {
 
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
+
+  const { user, authenticated } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (!authenticated) {
+      navigation.navigate('Login');
+    }
+  }
+  , [authenticated]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -34,6 +44,7 @@ const CreateAds = () => {
     const adData = {
       title,
       description,
+      user: user._id,
       image,
       category: selectedCategory,
     };
