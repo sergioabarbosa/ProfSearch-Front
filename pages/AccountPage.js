@@ -50,7 +50,8 @@ export default function AccountPage({navigation}) {
 
   try {
     const userId = user ? user._id : null; // Obtém o ID do usuário do estado local ou do contexto de autenticação
-    console.log('ID do usuário:', userId);
+    console.log('usuário**********:', user)
+    console.log('ID do usuário#########', userId);
     const formData = new FormData();
     formData.append('image', {
       uri: image,
@@ -58,14 +59,28 @@ export default function AccountPage({navigation}) {
       name: 'image',
     });
     formData.append('userId', userId); // Adiciona o ID do usuário ao FormData
+    formData.append('name', user.name);
+    formData.append('username', user.username);
+    formData.append('email', user.email);
+    formData.append('usertype', user.usertype);
+    formData.append('cpf', user.cpf);
+    formData.append('telephone', user.telephone);
+    formData.append('userPlan', user.userPlan);
+    formData.append('address', user.address);
+
+    // Obtenha o token de autenticação do AsyncStorage ou de onde ele estiver armazenado
+    const token = await AsyncStorage.getItem('token');
+    console.log('Token de acesso:', token);
 
     const response = await api.post(`/upload`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`, // Envie o token no cabeçalho Authorization
       },
     });
-
+    console.log('response===================', response.data)
+    
     if (response.status === 200 || response.status === 201) {
       console.log('Imagem enviada com sucesso para o servidor!');
     } else {

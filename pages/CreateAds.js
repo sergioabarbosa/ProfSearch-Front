@@ -7,7 +7,7 @@ import { api } from '../api';
 import { ScrollView } from 'react-native-gesture-handler';
 import { AuthContext } from '../Contexts/auth';
 
-const CreateAds = () => {
+const CreateAds = ({navigation}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState('');

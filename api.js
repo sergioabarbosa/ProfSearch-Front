@@ -62,9 +62,9 @@ export const getUsers = async (access_token) => {
   }
 };
 
-export const getUser = async (access_token, id) => {
+export const getUser = async (access_token, _id) => {
   try {
-    const request = await api.get(`/users/${id}`, {
+    const request = await api.get(`/users/${_id}`, {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
@@ -77,9 +77,9 @@ export const getUser = async (access_token, id) => {
   }
 };
 
-export const updateUser = async (access_token, id, name, email, password) => {
+export const updateUser = async (access_token, _id, name, email, password) => {
   try {
-    const request = await api.put(`/users/${id}`, { name, email, password }, {
+    const request = await api.put(`/users/${_id}`, { name, email, password }, {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
